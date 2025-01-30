@@ -23,14 +23,26 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: check repo
+        uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: sleep 5
+        run: sleep 1
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Run tests with Allure results
+        run: pytest --alluredir=./allure-results tests/
+
+      - name: Generate Allure test report
+        uses: andgineer/allure-report@v3.4
+        with:
+          allure-results: allure-results
+          website: gh-pages-dir
+          reports-site-path: builds/tests
+      
+      - name: Publish Allure test report
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: gh-pages-dir
