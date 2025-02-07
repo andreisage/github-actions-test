@@ -35,9 +35,17 @@ jobs:
       run: |
         echo "VAR3=${{env.VAR2}}" >> $GITHUB_ENV
     
-    - name: Set up vars3
+    - name: Set up vars4
       run: |
         echo "VAR4=${{env.VAR1}}_${{env.VAR2}}_${{env.VAR3}}" >> $GITHUB_ENV
+
+    - name: Set up vars5
+      run: |
+        VARA="Hi"
+        echo "VAR_A=${VAR_A}" >> $GITHUB_ENV
+        echo "VAR_B=${{env.VAR_A}}" >> $GITHUB_ENV
+        echo "VAR_C=${{env.VAR_B}}" >> $GITHUB_ENV
+        echo "VAR_D=${{env.VAR_A}}_${{env.VAR_B}}_${{env.VAR_C}}" >> $GITHUB_ENV
 
     - name: Check files
       run: |
