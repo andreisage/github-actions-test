@@ -41,7 +41,7 @@ jobs:
 
     - name: Set up vars5
       run: |
-        VARA="Hi"
+        VAR_A="Hi"
         echo "VAR_A=${VAR_A}" >> $GITHUB_ENV
         echo "VAR_B=${{env.VAR_A}}" >> $GITHUB_ENV
         echo "VAR_C=${{env.VAR_B}}" >> $GITHUB_ENV
