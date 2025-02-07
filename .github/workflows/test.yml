@@ -54,4 +54,9 @@ jobs:
         echo "The value of 'VAR3' is ${{env.VAR3}}"
         echo "The value of 'VAR4' is ${{env.VAR4}}"
 
+        echo "The value of 'VAR_A' is ${{env.VAR_A}}"
+        echo "The value of 'VAR_B' is ${{env.VAR_B}}"
+        echo "The value of 'VAR_C' is ${{env.VAR_C}}"
+        echo "The value of 'VAR_D' is ${{env.VAR_D}}"
+
         echo "${{ env.joined }}"
