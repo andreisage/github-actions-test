@@ -21,20 +21,24 @@ jobs:
       TEST2: "test2"
 
     steps:
-    - name: Set up vars
+    - name: Set up vars1
       run: |
         VAR1="Hello"
         echo "VAR1=${VAR1}" >> $GITHUB_ENV
-        
+        echo "joined=${{env.TEST1}}${{env.TEST2}}" >> $GITHUB_ENV
+
+    - name: Set up vars2
+      run: |
         echo "VAR2=${{env.VAR1}}" >> $GITHUB_ENV
-
-        VAR3=${{env.VAR2}}
-        echo "VAR3=${VAR3}" >> $GITHUB_ENV
-
+          
+    - name: Set up vars3
+      run: |
+        echo "VAR3=${{env.VAR2}}" >> $GITHUB_ENV
+    
+    - name: Set up vars3
+      run: |
         echo "VAR4=${{env.VAR1}}_${{env.VAR2}}_${{env.VAR3}}" >> $GITHUB_ENV
 
-        echo "joined=${{env.TEST1}}${{env.TEST2}}" >> $GITHUB_ENV
-    
     - name: Check files
       run: |
         echo "The value of 'VAR1' is ${{env.VAR1}}"
