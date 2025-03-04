@@ -1,16 +1,16 @@
 name: Test
 
 
-on:
-  push:
-    branches-ignore:
-      - '*'
-
-
 #on:
 #  push:
-#    branches:
-#      - main
+#    branches-ignore:
+#      - '*'
+
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
