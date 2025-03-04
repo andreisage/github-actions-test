@@ -16,7 +16,7 @@ jobs:
     - name: Set GIT_PREVIOUS_COMMIT
       id: set-previous-commit
       run: |
-        if [ -f "${{ github.workspace }}/Jenkinsfile" ]; then
+        if [ -f "${{ github.workspace }}/package.json" ]; then
           echo "GIT_PREVIOUS_COMMIT=$(git rev-parse HEAD^)" >> $GITHUB_ENV
         fi
 
