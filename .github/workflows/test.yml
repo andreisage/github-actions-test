@@ -16,7 +16,11 @@ jobs:
     - name: Set GIT_PREVIOUS_COMMIT
       id: set-previous-commit
       run: |
-        echo "GIT_PREVIOUS_COMMIT=$(git rev-parse HEAD^)" >> $GITHUB_ENV
+        if git rev-parse HEAD^ >/dev/null 2>&1; then
+          echo "GIT_PREVIOUS_COMMIT=$(git rev-parse HEAD^)" >> $GITHUB_ENV
+        else
+          echo "GIT_PREVIOUS_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        fi
 
     - name: Generate Changelog
       id: generate-changelog
