@@ -33,6 +33,14 @@ jobs:
         log="${log}\n\nGo to ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }} to see the full log"
         echo "$log" > ${{ github.workspace }}/changelog.log
 
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: file
+        path: ${{ github.workspace }}/changelog.log
+        if-no-files-found: error
+        retention-days: 1
+
     - name: Save Changelog
       if: env.SETUP_NAME
       run: |
