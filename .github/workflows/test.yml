@@ -1,0 +1,39 @@
+name: Generate Changelog
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set GIT_PREVIOUS_COMMIT
+      id: set-previous-commit
+      run: |
+        if [ -f "${{ github.workspace }}/Jenkinsfile" ]; then
+          echo "GIT_PREVIOUS_COMMIT=$(git rev-parse HEAD^)" >> $GITHUB_ENV
+        fi
+
+    - name: Generate Changelog
+      id: generate-changelog
+      run: |
+        title="Build"
+        log="${title} #${{ github.run_number }}\n\n"
+        changeLogSets=$(git log --pretty=format:"%s by %an" ${{ env.GIT_PREVIOUS_COMMIT }}..HEAD)
+        for entry in $changeLogSets; do
+          msg=$(echo $entry | sed "s/'//g")
+          log="${log}* ${msg}\n"
+        done
+        log="${log}\n\nGo to ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }} to see the full log"
+        echo "$log" > ${{ github.workspace }}/changelog.log
+
+    - name: Save Changelog
+      if: env.SETUP_NAME
+      run: |
+        cp ${{ github.workspace }}/changelog.log ${{ github.workspace }}/${{ env.SETUP_NAME }}.log
