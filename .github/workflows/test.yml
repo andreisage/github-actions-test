@@ -33,6 +33,14 @@ jobs:
         log="${log}\n\nGo to ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }} to see the full log"
         echo "$log" > ${{ github.workspace }}/changelog.log
 
+    - name: Debug GIT_PREVIOUS_COMMIT
+      run: echo "GIT_PREVIOUS_COMMIT=${{ env.GIT_PREVIOUS_COMMIT }}"
+
+    - name: Debug changeLogSets
+      run: |
+        changeLogSets=$(git log --pretty=format:"%s by %an" ${{ env.GIT_PREVIOUS_COMMIT }}..HEAD)
+        echo "changeLogSets=${changeLogSets}"
+
     - name: Upload JAR artifact
       uses: actions/upload-artifact@v4
       with:
