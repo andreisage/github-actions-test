@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  changelog:
     runs-on: ubuntu-latest
 
     steps:
@@ -55,3 +55,21 @@ jobs:
       if: env.SETUP_NAME
       run: |
         cp ${{ github.workspace }}/changelog.log ${{ github.workspace }}/${{ env.SETUP_NAME }}.log
+
+
+  info-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Info
+      uses: ./.github/composite-actions/get-branch-info
+      with:
+        branchName: ${{ github.ref_name }}
+        projectName: mongo-db
+        os:
+
+    - name: Print setup name
+      run: echo "Setup name is ${{ steps.setup.outputs.setupName }}"
