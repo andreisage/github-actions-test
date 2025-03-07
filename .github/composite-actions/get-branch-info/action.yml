@@ -82,10 +82,10 @@ runs:
         echo "SETUP_NAME=$setupName" >> $GITHUB_ENV
         echo "PROJECT_NAME=$projectName" >> $GITHUB_ENV
 
-        echo "::set-output name=pullRequest::$pullRequest"
-        echo "::set-output name=version::$version"
-        echo "::set-output name=release::$release"
-        echo "::set-output name=feature::$feature"
-        echo "::set-output name=tag::$tag"
-        echo "::set-output name=setupName::$setupName"
+        echo "pull_request=$pullRequest" >> $GITHUB_OUTPUT
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "release=$release" >> $GITHUB_OUTPUT
+        echo "feature=$feature" >> $GITHUB_OUTPUT
+        echo "tag=$tag" >> $GITHUB_OUTPUT
+        echo "setup_name=$setupName" >> $GITHUB_OUTPUT
       shell: bash
