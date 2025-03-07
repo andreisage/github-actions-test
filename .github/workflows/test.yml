@@ -61,9 +61,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: Setup Info
       uses: andreisage/github-actions-test/get-branch-info.yml@main
       with:
