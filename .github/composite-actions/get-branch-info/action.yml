@@ -1,10 +1,10 @@
 name: Get Branch Info
 description: Sets up environment variables and generates setup names based on branch types and project names
 inputs:
-  branchName:
+  branch_name:
     description: 'The name of the branch'
     required: true
-  projectName:
+  project_name:
     description: 'The name of the project'
     required: false
     default: 'noname'
@@ -13,7 +13,7 @@ inputs:
     required: false
     default: 'all'
 outputs:
-  pullRequest:
+  pull_request:
     description: 'Indicates if it is a pull request'
   version:
     description: 'The version'
@@ -23,15 +23,15 @@ outputs:
     description: 'Indicates if it is a feature'
   tag:
     description: 'The tag'
-  setupName:
+  setup_name:
     description: 'The setup name'
 runs:
   using: 'composite'
   steps:
     - name: Set up environment variables
       run: |
-        branchName="${{ inputs.branchName }}"
-        projectName="${{ inputs.projectName }}"
+        branch_name="${{ inputs.branch_name }}"
+        project_name="${{ inputs.project_name }}"
         os="${{ inputs.os }}"
 
         osa=""
@@ -44,43 +44,43 @@ runs:
         release=false
         feature=false
 
-        if [ -n "$PROJECT_NAME" ] && [ "$projectName" == "noname" ]; then
-          projectName="$PROJECT_NAME"
+        if [ -n "$PROJECT_NAME" ] && [ "$project_name" == "noname" ]; then
+          project_name="$PROJECT_NAME"
         fi
 
-        if [ "$branchName" == "integration" ]; then
+        if [ "$branch_name" == "integration" ]; then
           tag="pre-integration"
           version="99.999"
-          setupBaseName="${projectName}-${version}"
+          setupBaseName="${project_name}-${version}"
           setupName="${setupBaseName}.${BUILD_ID}${osa}"
           release=true
-        elif [[ "$branchName" =~ ^release/ ]]; then
-          tag="${branchName##*/}"
+        elif [[ "$branch_name" =~ ^release/ ]]; then
+          tag="${branch_name##*/}"
           IFS='.' read -r -a versionParts <<< "$tag"
           if [ ${#versionParts[@]} -eq 3 ]; then
             shortTag="${versionParts[0]}.${versionParts[1]}"
           fi
           version="${tag//.x/.999}"
-          setupBaseName="${projectName}-${version}"
+          setupBaseName="${project_name}-${version}"
           setupName="${setupBaseName}.${BUILD_ID}${osa}"
           release=true
-        elif [[ "$branchName" =~ ^feat(ure)?/ ]]; then
-          version="${branchName#*/}"
+        elif [[ "$branch_name" =~ ^feat(ure)?/ ]]; then
+          version="${branch_name#*/}"
           version="${version//[-_]/ }"
           version="${version%% *}"
           tag="feat-$version"
-          setupBaseName="feat-${projectName}-${version}"
+          setupBaseName="feat-${project_name}-${version}"
           setupName="${setupBaseName}.${BUILD_ID}${osa}"
           feature=true
-        elif [[ "$branchName" =~ ^PR.* ]]; then
+        elif [[ "$branch_name" =~ ^PR.* ]]; then
           pullRequest=true
-          setupBaseName="stage-${projectName}-${version}"
+          setupBaseName="stage-${project_name}-${version}"
           setupName="${setupBaseName}.${BUILD_ID}${osa}"
         fi
 
         echo "SETUP_BASE_NAME=$setupBaseName" >> $GITHUB_ENV
         echo "SETUP_NAME=$setupName" >> $GITHUB_ENV
-        echo "PROJECT_NAME=$projectName" >> $GITHUB_ENV
+        echo "PROJECT_NAME=$project_name" >> $GITHUB_ENV
 
         echo "pull_request=$pullRequest" >> $GITHUB_OUTPUT
         echo "version=$version" >> $GITHUB_OUTPUT

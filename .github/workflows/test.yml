@@ -67,8 +67,8 @@ jobs:
     - name: Setup Info
       uses: ./.github/composite-actions/get-branch-info
       with:
-        branchName: ${{ github.ref_name }}
-        projectName: mongo-db
+        branch_name: ${{ github.ref_name }}
+        project_name: mongo-db
         os:
 
     - name: Print setup name
