@@ -33,7 +33,7 @@ jobs:
           log="${log}* ${msg}\n"
         done
         log="${log}\n\nGo to ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }} to see the full log"
-        echo "$log" > ${{ github.workspace }}/changelog.log
+        echo -e "$log" > ${{ github.workspace }}/changelog.log
 
     - name: Debug GIT_PREVIOUS_COMMIT
       run: echo "GIT_PREVIOUS_COMMIT=${{ env.GIT_PREVIOUS_COMMIT }}"
