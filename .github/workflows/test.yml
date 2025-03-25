@@ -15,7 +15,7 @@ jobs:
 
     - name: Branch Info
       id: get-info-branch
-      uses: ./github-actions-test/.github/composite-actions/get-branch-info
+      uses: ./.github/composite-actions/get-branch-info
       with:
         branch_name: ${{ github.ref_name }}
         project_name: translation
