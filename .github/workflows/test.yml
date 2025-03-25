@@ -1,6 +1,9 @@
-name: Generate Changelog
+name: Get Branch info
 
-on: workflow_dispatch
+on: 
+  push:
+    branches:
+      - '*'
 
 jobs:
   changelog:
@@ -16,7 +19,7 @@ jobs:
       with:
         branch_name: ${{ github.ref_name }}
         project_name: translation
-
+# act
 #    - name: Get last workflow run SHA
 #      id: last-run
 #      run: |
