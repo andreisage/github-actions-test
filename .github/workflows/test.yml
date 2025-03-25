@@ -19,6 +19,16 @@ jobs:
       with:
         branch_name: ${{ github.ref_name }}
         project_name: translation
+    
+    - name: Display info
+      id: display-info
+      run: |
+        echo "Pull Request: ${{ steps.get-info-branch.outputs.pull_request }}"
+        echo "Version: ${{ steps.get-info-branch.outputs.version }}"
+        echo "Release: ${{ steps.get-info-branch.outputs.release }}"
+        echo "Feature: ${{ steps.get-info-branch.outputs.feature }}"
+        echo "Tag: ${{ steps.get-info-branch.outputs.tag }}"
+        echo "Setup Name: ${{ steps.get-info-branch.outputs.setup_name }}"
 # act
 #    - name: Get last workflow run SHA
 #      id: last-run
