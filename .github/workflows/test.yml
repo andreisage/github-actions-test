@@ -1,6 +1,9 @@
 name: Get Branch info
 
 on: 
+  pull_request:
+    branches:
+      - '*'
   push:
     branches:
       - '*'
