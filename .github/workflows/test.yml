@@ -30,6 +30,7 @@ jobs:
         echo "Tag: ${{ steps.get-info-branch.outputs.tag }}"
         echo "Setup Name: ${{ steps.get-info-branch.outputs.setup_name }}"
 # act
+#act
 #    - name: Get last workflow run SHA
 #      id: last-run
 #      run: |

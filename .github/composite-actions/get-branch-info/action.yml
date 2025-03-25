@@ -15,20 +15,28 @@ inputs:
 outputs:
   pull_request:
     description: 'Indicates if it is a pull request'
+    value: ${{ steps.setup-env.outputs.pull_request }}
   version:
     description: 'The version'
+    value: ${{ steps.setup-env.outputs.version }}
   release:
     description: 'Indicates if it is a release'
+    value: ${{ steps.setup-env.outputs.release }}
   feature:
     description: 'Indicates if it is a feature'
+    value: ${{ steps.setup-env.outputs.feature }}
   tag:
     description: 'The tag'
+    value: ${{ steps.setup-env.outputs.tag }}
   setup_name:
     description: 'The setup name'
+    value: ${{ steps.setup-env.outputs.setupName }}
+    
 runs:
   using: 'composite'
   steps:
     - name: Set up environment variables
+      id: setup-env
       run: |
         branch_name="${{ inputs.branch_name }}"
         project_name="${{ inputs.project_name }}"
