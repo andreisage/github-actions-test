@@ -67,6 +67,8 @@ jobs:
 #
 #    - name: Verify smbclient installation
 #      run: smbclient --version
+    - name: Print workspace path
+      run: echo ${{ github.workspace }}
 
     - name: check files
       run: |
