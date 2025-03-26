@@ -72,7 +72,7 @@ jobs:
 
     - name: check files
       run: |
-        cat cd ${{ github.workspace }}/README.md
+        cat README.md
         ls -la
 
 
