@@ -1,4 +1,4 @@
-name: Get Branch info
+name: TEST
 
 on: 
   pull_request:
@@ -9,8 +9,30 @@ on:
       - '*'
 
 jobs:
-  changelog:
+  get-nodejs-version:
     runs-on: ubuntu-latest
+    outputs:
+      nodejs_version: ${{ steps.get-nodejs-version.outputs.NODEJS_VERSION }}
+    steps:
+      - name: get node js version
+        id: get-nodejs-version
+        run: |
+          nodejs_version=$(grep -oP "(?<=env.NODEJS_VERSION = ')[^']+" nodejs-version.groovy)
+          echo "nodejs_version=${nodejs_version}" >> $GITHUB_OUTPUT
+
+  translation:
+    runs-on: ubuntu-latest
+
+    container:
+      image: node:${{needs.get-nodejs-version.outputs.nodejs_version}}
+      options: --user root
+    needs: get-nodejs-version
+
+    env:
+      SYRACUSE: ${{ github.workspace }}/syracuse
+      OUTPUT_FOLDER: ${{ github.workspace }}/outFiles
+      TRANSLATION_SHARED_FOLDER: RessourcesTraductionsX3
+      SYRACUSE_SERVER: http://aws-x3-indcloud.sagex3rd.local:8124
 
     steps:
     - name: Checkout code
@@ -18,21 +40,49 @@ jobs:
 
     - name: Branch Info
       id: get-info-branch
-      uses: ./.github/composite-actions/get-branch-info
+      uses:  ./.github/composite-actions/get-branch-info
       with:
         branch_name: ${GITHUB_HEAD_REF}
         project_name: translation
     
-    - name: Display info
-      id: display-info
+    - name: Set up environment variables
+      id: set-vars
       run: |
-        echo "Pull Request: ${{ steps.get-info-branch.outputs.pull_request }}"
-        echo "Version: ${{ steps.get-info-branch.outputs.version }}"
-        echo "Release: ${{ steps.get-info-branch.outputs.release }}"
-        echo "Feature: ${{ steps.get-info-branch.outputs.feature }}"
-        echo "Tag: ${{ steps.get-info-branch.outputs.tag }}"
-        echo "Setup Name: ${{ steps.get-info-branch.outputs.setup_name }}"
-        echo "hello"
+        SYRACUSE_VERSION=${{ steps.get-info-branch.outputs.version }}
+        echo "SYRACUSE_VERSION=$SYRACUSE_VERSION" >> $GITHUB_ENV
+
+        NODEJS_VERSION=${{ needs.get-nodejs-version.outputs.nodejs_version }}
+        echo "NODEJS_VERSION=${NODEJS_VERSION}" >> $GITHUB_ENV
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{env.NODEJS_VERSION}}
+
+#  changelog:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - name: Checkout code
+#      uses: actions/checkout@v3
+#
+#    - name: Branch Info
+#      id: get-info-branch
+#      uses: ./.github/composite-actions/get-branch-info
+#      with:
+#        branch_name: ${GITHUB_HEAD_REF}
+#        project_name: translation
+#    
+#    - name: Display info
+#      id: display-info
+#      run: |
+#        echo "Pull Request: ${{ steps.get-info-branch.outputs.pull_request }}"
+#        echo "Version: ${{ steps.get-info-branch.outputs.version }}"
+#        echo "Release: ${{ steps.get-info-branch.outputs.release }}"
+#        echo "Feature: ${{ steps.get-info-branch.outputs.feature }}"
+#        echo "Tag: ${{ steps.get-info-branch.outputs.tag }}"
+#        echo "Setup Name: ${{ steps.get-info-branch.outputs.setup_name }}"
+#        echo "hello"
 
 #    - name: Get last workflow run SHA
 #      id: last-run
