@@ -62,11 +62,20 @@ jobs:
       with:
         node-version: ${{env.NODEJS_VERSION}}
     
-    - name: Install smbclient
-      run:  apt-get update && apt-get install -y smbclient
+#    - name: Install smbclient
+#      run:  apt-get update && apt-get install -y smbclient
+#
+#    - name: Verify smbclient installation
+#      run: smbclient --version
 
-    - name: Verify smbclient installation
-      run: smbclient --version
+    - name: check files
+      run: |
+        ls -la
+      
+    - name: check files
+      run: |
+        ls -la ${{ github.workspace }}
+      
 
 #  changelog:
 #    runs-on: ubuntu-latest
