@@ -57,10 +57,10 @@ jobs:
         NODEJS_VERSION=${{ needs.get-nodejs-version.outputs.nodejs_version }}
         echo "NODEJS_VERSION=${NODEJS_VERSION}" >> $GITHUB_ENV
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{env.NODEJS_VERSION}}
+#    - name: Set up Node.js
+#      uses: actions/setup-node@v2
+#      with:
+#        node-version: ${{env.NODEJS_VERSION}}
     
 #    - name: Install smbclient
 #      run:  apt-get update && apt-get install -y smbclient
@@ -72,12 +72,9 @@ jobs:
 
     - name: check files
       run: |
+        cat cd ${{ github.workspace }}/README.md
         ls -la
-      
-    - name: check files
-      run: |
-        ls -la ${{ github.workspace }}
-      
+
 
 #  changelog:
 #    runs-on: ubuntu-latest
