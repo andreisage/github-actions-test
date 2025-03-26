@@ -20,7 +20,7 @@ jobs:
       id: get-info-branch
       uses: ./.github/composite-actions/get-branch-info
       with:
-        branch_name: ${{ github.ref_name }}
+        branch_name: ${ GITHUB_HEAD_REF }
         project_name: translation
     
     - name: Display info
