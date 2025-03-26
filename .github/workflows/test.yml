@@ -32,6 +32,7 @@ jobs:
         echo "Feature: ${{ steps.get-info-branch.outputs.feature }}"
         echo "Tag: ${{ steps.get-info-branch.outputs.tag }}"
         echo "Setup Name: ${{ steps.get-info-branch.outputs.setup_name }}"
+        echo "release"
 # act
 #act
 #    - name: Get last workflow run SHA
