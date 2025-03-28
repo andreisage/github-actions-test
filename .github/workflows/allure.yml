@@ -1,7 +1,12 @@
 name: Run tests and publish report
-on: [push]
+on:
+  workflow_call:
+    inputs:
+      status:
+        type: string
+        required: true
 jobs:
-  test:
+  allure:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,18 +17,20 @@ jobs:
           distribution: zulu
           java-version: 17
 
-      - name: Run some steps
-        run: |
-          echo "Running step 1"
-          # Simulate a failure
-          exit 1
-
-      - name: Generate Allure Results for Failed Steps
-        if: failure()
+      - name: Generate Allure Results for Reusable Workflows and Steps
+        id: generate-results
         run: |
           mkdir -p allure-results
-          echo "<test-case status='failed'><name>Build with Gradle</name></test-case>" > allure-results/test-case.xml
-          echo "<test-case status='failed'><name>Run tests</name></test-case>" >> allure-results/test-case.xml
+          if [ "${{ inputs.status }}" == "success" ]; then
+            echo "<test-case status='passed'><name>Reusable Workflow 1</name></test-case>" > allure-results/reusable1.xml
+          else
+            echo "<test-case status='failed'><name>Reusable Workflow 1</name></test-case>" > allure-results/reusable1.xml
+          fi
+          if [ "${{ inputs.status }}" == "success" ]; then
+            echo "<test-case status='passed'><name>Build with Gradle</name></test-case>" > allure-results/build.xml
+          else
+            echo "<test-case status='failed'><name>Build with Gradle</name></test-case>" > allure-results/build.xml
+          fi
 
       - name: Load test report history
         uses: actions/checkout@v3
