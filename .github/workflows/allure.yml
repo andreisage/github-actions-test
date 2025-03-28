@@ -12,6 +12,12 @@ jobs:
           distribution: zulu
           java-version: 17
 
+      - name: Run some steps
+        run: |
+          echo "Running step 1"
+          # Simulate a failure
+          exit 1
+
       - name: Generate Allure Results for Failed Steps
         if: failure()
         run: |
