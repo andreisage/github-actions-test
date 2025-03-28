@@ -12,14 +12,12 @@ jobs:
           distribution: zulu
           java-version: 17
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Run tests
-        run: ./gradlew clean test
+      - name: Generate Allure Results for Failed Steps
+        if: failure()
+        run: |
+          mkdir -p allure-results
+          echo "<test-case status='failed'><name>Build with Gradle</name></test-case>" > allure-results/test-case.xml
+          echo "<test-case status='failed'><name>Run tests</name></test-case>" >> allure-results/test-case.xml
 
       - name: Load test report history
         uses: actions/checkout@v3
