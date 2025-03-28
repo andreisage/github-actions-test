@@ -5,6 +5,7 @@ on:
       status:
         type: string
         required: true
+        
 jobs:
   allure:
     runs-on: ubuntu-latest
